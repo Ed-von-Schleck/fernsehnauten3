@@ -71,7 +71,8 @@ body
   position:relative
   width:18em
   float:right
-  background-color:#FFFFFF
+  //background-color:#FFFFFF
+  background-color:background_color
 
 
 #watching_title
@@ -177,31 +178,70 @@ body
 
   
 #feedback
+  padding:0.5em
+  //background-color:#333333
+  background-color:background_color_dark
   position:relative
   margin-top:2em
-  border-width:0.5em
-  //border-top-width:0.5em
-  border-color:background_color_dark
-  border-style:solid
+  box-shadow:  inset 0.25em 0.25em 0.25em rgba(255,255,255,0.5) , inset 0.25em -0.25em 0.25em rgba(0,0,0,0.5)
   border-top-left-radius:0.5em
   border-bottom-left-radius:0.5em
-
+  
 #feedback_title
   margin:1em
+  position:relative
+  //color:#FFFFFF
+  color:text_color_bright
 
 #feedback_showinfo
   margin:1em
+  position:relative
+  //color:#FFFFFF
+  color:text_color_bright
   
 #button_feedback_yes
+  cursor:default
+  font-size:2em
+  line-height:1.5em
+  text-align:center
   position:relative
   float:left
-  width:4em
-  height:2em
-  background-color:#000000
+  width:3em
+  height:1.5em
+  background-color:#008844
+  margin-left:1.25em
+  margin-right:0.25em
+  margin-bottom:0.5em
+  border-radius:1em
+  box-shadow: inset 0em 0em 0.75em #000000
+  transition: background-color 0.25s
+  transition: box-shadow 0.25s
+  border-width:0.1em
+  border-style:solid
+  border-color:#444444
+  
+#button_feedback_yes:hover
+  background-color:#00FF88
+  box-shadow: inset 0em 0em 0.5em #000000
   
 #button_feedback_no
+  cursor:default
+  font-size:2em
+  line-height:1.5em
+  text-align:center
   position:relative
   float:left
-  width:4em
-  height:2em
-  background-color:#AAA000
+  width:3em
+  height:1.5em
+  background-color:#882200
+  border-radius:1em
+  box-shadow: inset 0em 0em 0.75em #000000
+  transition: background-color 0.25s
+  transition: box-shadow 0.25s
+  border-width:0.1em
+  border-style:solid
+  border-color:#444444
+  
+#button_feedback_no:hover
+  background-color:#FF8800
+  box-shadow: inset 0em 0em 0.5em #000000
