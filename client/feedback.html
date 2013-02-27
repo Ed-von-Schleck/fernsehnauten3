@@ -7,11 +7,15 @@
       <div id="dummy"></div>
       <div id="element">
         {{#with channel "3sat.de"}}
-        <img src="{{logo}}" alt="Senderlogo">
+        <img src="{{logo}}" alt="Senderlogo" id="watching_logo">
         {{/with}}
-        Dein Senderlogo
       </div>
       <div id="selector">
+      {{#each channels}}
+        <div class="selector_logo_container set_on_click">
+          <div style="background-image: url({{this.logo}})"></div>
+        </div>
+      {{/each}}
       </div>
     </div>
     
