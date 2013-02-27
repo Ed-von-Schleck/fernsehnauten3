@@ -6,16 +6,18 @@
     <div id="container">
       <div id="dummy"></div>
       <div id="element">
-        {{#with channel "3sat.de"}}
-        <img src="{{logo}}" alt="Senderlogo" id="watching_logo">
-        {{/with}}
-      </div>
-      <div id="selector">
-      {{#each channels}}
-        <div class="selector_logo_container set_on_click">
-          <div style="background-image: url({{this.logo}})"></div>
+        <div id="selector_container">
+          <div id="watching_logo_container">
+            {{#with channel "3sat.de"}}
+            <img src="{{logo}}" alt="Senderlogo" id="watching_logo">
+            {{/with}}
+          </div>
+          {{#each channels}}
+          <div class="selector_logo_container set_on_click">
+            <div style="background-image: url({{this.logo}})"></div>
+          </div>
+          {{/each}}
         </div>
-      {{/each}}
       </div>
     </div>
     
