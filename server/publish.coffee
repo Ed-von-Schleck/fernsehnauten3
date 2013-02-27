@@ -3,6 +3,7 @@ Meteor.publish "channels", ->
   options =
     fields:
       "display-name": 1
+      "logo": 1
   return Channels.find query, options
 
 Meteor.publish "programs", ->
