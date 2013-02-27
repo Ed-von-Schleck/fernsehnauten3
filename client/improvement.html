@@ -1,15 +1,17 @@
 <template name="improvement">
+  {{#with unknown_program}}
     <p id="feedback_question">
       <br><br>
       Interessiert Dich:
-      <h3>Titel einer Interessanten Sendung</h3>
+      <h3>{{title.[0].[0]}}</h3>
+      <h4>{{sub-title.[0].[0]}}</h3>
     </p>
     
-    <div class="feedback_button">
+    <div class="feedback_button" data-value="yes" data-program_title="{{title.[0].[0]}}">
       ja
     </div>
-    <div class="feedback_button">
+    <div class="feedback_button" data-value="no" data-program_title="{{title.[0].[0]}}">
       nein
     </div>
-
+  {{/with}}
 </template>

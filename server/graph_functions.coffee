@@ -101,9 +101,9 @@ walk = (userId) ->
       return if counter > 100
 
 calculateWeight = (userA, userB) ->
-  return null if (not userA.profile.history) or (not userB.profile.history) or (not userA.profile.hot_programs) or (not userB.profile.hot_programs)
-  sumUserA = userA.profile.history.length
-  sumUserB = userB.profile.history.length
+  return null if (not userA.profile.hot_programs) or (not userB.profile.hot_programs)
+  sumUserA = userA.profile.watched_programs_count
+  sumUserB = userB.profile.watched_programs_count
   return compareTitleCounters userA.profile.hot_programs, sumUserA, userB.profile.hot_programs, sumUserB
 
 harmonicMean = (a, b) ->

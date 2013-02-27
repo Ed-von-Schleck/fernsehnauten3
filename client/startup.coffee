@@ -27,3 +27,4 @@ subscribePrograms = () ->
 
 Meteor.startup ->
   subscribePrograms()
+  Session.set "random", Math.random()

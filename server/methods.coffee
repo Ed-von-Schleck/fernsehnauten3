@@ -1,9 +1,9 @@
 Meteor.methods
-  like: (program_id, program_title) ->
+  like: (program_title, amount=1) ->
     return if not @userId?
     query =
       _id: @userId
-      "profile.history": $ne: program_id
+      "profile.hot_programs.title": $ne: program_title
     update =
       $push:
         "profile.hot_programs":
@@ -15,14 +15,13 @@ Meteor.methods
       _id: @userId
       "profile.hot_programs.title": program_title
     update =
-      $push:
-        "profile.history": program_id
       $inc:
-        "profile.hot_programs.$.counter": 1
+        "profile.hot_programs.$.counter": amount
+        "profile.watched_programs_count": amount
     Meteor.users.update query, update
 
     user = Meteor.users.findOne @userId
-    size = user.profile.history.length
+    size = user.profile.watched_programs_count
     if Relations.find(user_ids: @userId).count() is 0
       console.log "triggered addRandomEdge for", @userId
       addRandomEdge @userId
