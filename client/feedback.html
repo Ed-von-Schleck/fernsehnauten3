@@ -16,7 +16,7 @@
           </div>
           
           {{#each channels}}
-          <div class="selector_logo_container set_on_click">
+          <div class="selector_logo_container">
             <div style="background-image: url({{this.logo}})"></div>
           </div>
           {{/each}}
@@ -34,19 +34,7 @@
       <h3>Titel deiner Sendung</h3>
       Text zu deiner Sendung 1 Text zu deiner Sendung 2 Text zu deiner Sendung 3 Text zu deiner Sendung 4 Text zu deiner Sendung 5 Text zu deiner Sendung 6
     </p>
-    
-    <p id="feedback_question">
-      <br><br>
-      Interessiert Dich:
-      <h3>Titel einer Interessanten Sendung</h3>
-    </p>
-    
-    <div class="feedback_button">
-      ja
-    </div>
-    <div class="feedback_button">
-      nein
-    </div>
+    {{> improvement}} 
   </div>
   
 </template>
