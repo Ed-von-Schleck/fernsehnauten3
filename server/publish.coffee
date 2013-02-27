@@ -14,4 +14,7 @@ Meteor.publish "programs", ->
     fields:
       title: 1
       channel: 1
+      "sub-title": 1
+      start: 1
+      stop: 1
   return Programs.find query, options

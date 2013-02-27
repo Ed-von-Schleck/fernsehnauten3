@@ -1,2 +1,3 @@
 Meteor.subscribe "channels"
-Meteor.subscribe "programs"
+# Programs subscription is handled by the function 'subscribePrograms'
+# whih is called by Meteor.startup
