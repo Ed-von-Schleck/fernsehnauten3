@@ -10,14 +10,15 @@
           
           <div id="watching_logo_container">
             {{#with channel "3sat.de"}}
-            <div style="background-image: url({{this.logo}})"></div>
-            <!-- <img src="{{logo}}" alt="Senderlogo" id="watching_logo"> -->
+            <!-- <div style="background-image: url({{this.logo}})"></div> -->
+            <img src="{{logo}}" alt="Senderlogo" id="watching_logo">
             {{/with}}
           </div>
           
           {{#each channels}}
-          <div class="selector_logo_container">
-            <div style="background-image: url({{this.logo}})"></div>
+          <div class="selector_logo_container set_on_click">
+            <img src="{{this.logo}}" alt="Senderlogo">
+            <!-- <div style="background-image: url({{this.logo}})"></div> -->
           </div>
           {{/each}}
         </div>
