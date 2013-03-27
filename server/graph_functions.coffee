@@ -59,6 +59,7 @@ upsertRelation = (userId, otherUserId, strength) ->
 walk = (userId) ->
   user = Meteor.users.findOne userId
   return if not user?
+  return if not user.profile?
   return if not user.profile.hot_programs?
   query =
     user_ids: userId
