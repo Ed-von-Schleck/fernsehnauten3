@@ -28,3 +28,10 @@ subscribePrograms = () ->
 Meteor.startup ->
   subscribePrograms()
   Session.set "random", Math.random()
+
+  if Meteor.userId()?
+    query =
+      _id: Meteor.userId()
+    update =
+      $set: "profile.watching": null
+    Meteor.users.update query, update
