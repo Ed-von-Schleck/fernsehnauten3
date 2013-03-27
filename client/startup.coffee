@@ -27,3 +27,10 @@ subscribePrograms = () ->
 
 Meteor.startup ->
   subscribePrograms()
+
+  if Meteor.userId()?
+    query =
+      _id: Meteor.userId()
+    update =
+      $set: "profile.watching": null
+    Meteor.users.update query, update
