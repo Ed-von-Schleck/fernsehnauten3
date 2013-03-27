@@ -41,7 +41,7 @@ upsertRelation = (userId, otherUserId, strength) ->
       user_ids:
         $all: [userId, otherUserId]
 
-    if strength >= 0.5
+    if strength > 0.5
       if existingRelation?
         if existingRelation.weight isnt strength
           console.log "updating Relation between", userId, "and", otherUserId, "to weight", strength

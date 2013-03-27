@@ -16,13 +16,27 @@ def email(id):
 def make_graph():
     graph = pydot.Dot(graph_type="graph")
     for relation in relations.find():
-        print relation
+        nodelist1 = graph.get_node(email(relation["user_ids"][0]))
+        nodelist2 = graph.get_node(email(relation["user_ids"][1]))
+
+        if not nodelist1:
+            node1 = pydot.Node(email(relation["user_ids"][0]), shape="box")
+            graph.add_node(node1)
+        else:
+            node1 = nodelist1[0]
+        if not nodelist2:
+            node2 = pydot.Node(email(relation["user_ids"][1]), shape="box")
+            graph.add_node(node2)
+        else:
+            node2 = nodelist2[0]
+
         edge = pydot.Edge(
-            email(relation["user_ids"][0]),
-            email(relation["user_ids"][1]),
+            node1,
+            node2,
             label=str({0:.2}).format(relation["weight"]),
             penwidth=float(relation["weight"]) * 5,
-            weight=int(relation["weight"] * 100))
+            weight=int(relation["weight"] * 100),
+        )
         graph.add_edge(edge)
     return graph
 
