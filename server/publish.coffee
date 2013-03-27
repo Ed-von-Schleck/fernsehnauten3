@@ -53,7 +53,10 @@ Meteor.publish "unknown_programs", ->
       
     changed: (id, fields) =>
       console.log "changed"
-      known_program_titles = _.map fields.profile.hot_programs, (program) -> program.title
+      if fields.profile? and fields.profile.hot_programs?
+        known_program_titles = _.map fields.profile.hot_programs, (program) -> program.title
+      else
+        known_program_titles = []
       diff = _.difference known_program_titles, self.old_known_program_titles
       if diff.length isnt 0
         query =
