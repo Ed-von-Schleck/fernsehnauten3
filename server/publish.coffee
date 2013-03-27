@@ -30,7 +30,6 @@ Meteor.publish "unknown_programs", ->
 
   handle = Meteor.users.find(query, options).observeChanges
     added: (id, fields) =>
-      console.log "added"
       if fields.profile? and fields.profile.hot_programs?
         known_program_titles = _.map fields.profile.hot_programs, (program) -> program.title
       else
@@ -52,7 +51,6 @@ Meteor.publish "unknown_programs", ->
       self.old_known_program_titles = known_program_titles
       
     changed: (id, fields) =>
-      console.log "changed"
       if fields.profile? and fields.profile.hot_programs?
         known_program_titles = _.map fields.profile.hot_programs, (program) -> program.title
       else

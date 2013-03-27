@@ -14,7 +14,11 @@ def email(id):
     return users.find_one(id)["emails"][0]["address"]
 
 def make_graph():
-    graph = pydot.Dot(graph_type="graph")
+    graph = pydot.Dot(
+            graph_type="graph",
+            simplify=True,
+            graph_name="Fernsehnauten User Relationships"
+    )
     for relation in relations.find():
         nodelist1 = graph.get_node(email(relation["user_ids"][0]))
         nodelist2 = graph.get_node(email(relation["user_ids"][1]))
@@ -55,7 +59,7 @@ class Handler(BaseHTTPServer.BaseHTTPRequestHandler):
         res.wfile.write("</head>")
         res.wfile.write("<body>")
         res.wfile.write("<svg>")
-        res.wfile.write(make_graph().create_svg())
+        res.wfile.write(make_graph().create_svg(prog="dot"))
         res.wfile.write("</svg>")
         res.wfile.write("</body>")
         res.wfile.write("</html>")
