@@ -31,7 +31,10 @@ Meteor.publish "unknown_programs", ->
   handle = Meteor.users.find(query, options).observeChanges
     added: (id, fields) =>
       console.log "added"
-      known_program_titles = _.map fields.profile.hot_programs, (program) -> program.title
+      if fields.profile? and fields.profile.hot_programs?
+        known_program_titles = _.map fields.profile.hot_programs, (program) -> program.title
+      else
+        known_program_titles = []
       query =
         "title.0.0": $nin: known_program_titles
       options =
