@@ -23,6 +23,7 @@ getRecommendations = (userId) ->
 addRandomEdge = (userId) ->
   user = Meteor.users.findOne userId
   return if not user?
+  return if not user.profile?
   return if not user.profile.hot_programs?
   query =
     _id: $ne: userId
