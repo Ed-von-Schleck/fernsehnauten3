@@ -20,9 +20,9 @@ def make_graph():
         edge = pydot.Edge(
             email(relation["user_ids"][0]),
             email(relation["user_ids"][1]),
-            weight=int(relation["weight"] * 100),
             label=str({0:.2}).format(relation["weight"]),
-            penwidth=float(relation["weight"]) * 5)
+            penwidth=float(relation["weight"]) * 5),
+            weight=int(relation["weight"] * 100),
         graph.add_edge(edge)
     return graph
 
