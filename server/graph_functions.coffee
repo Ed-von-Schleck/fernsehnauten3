@@ -1,5 +1,66 @@
-getRecByFriendHistory = (userId) ->
-  undefined
+findUserRelations = (userId, limit=100) ->
+  query =
+    user_ids: userId
+  options =
+    sort:
+      weight: -1
+    limit: limit
+  return Relations.find query, options
+
+
+@getRecByFriendHistory = (userId) ->
+  self = this
+  query =
+      start: $lt: +new Date / 1000 | 0
+      stop: $gt: +new Date / 1000 | 0
+    options =
+      fields:
+        title: 1
+  currentProgramsMap = {}
+  currentProgramTitles = []
+  self.recommendations = {}
+  currentPrograms = Programs.find(query, options).forEach (program) ->
+    currentProgramsMap[program.title] = program._id
+    currentProgramTitles.push program.title
+    self.recommendations[program.title] = 0
+
+  hot_programs = {}
+  user = Meteor.users.findOne userId, {fields: "profile.hot_programs": 1}
+  for program in user.profile.hot_programs
+    hot_programs[program.title] = 1 #hash map lookups are faster than array lookups
+
+  findUserRelations(userId).map (relation) ->
+    otherUserId = if relation.user_ids[0] is userId then relation.user_ids[1] else relation.user_ids[0]
+    innerQuery =
+      _id: otherUserId
+      "profile.hot_programs.title": $in: currentProgramTitles
+    innerOptions =
+      fields:
+        "profile.hot_programs": 1
+
+    otherUser = Meteor.users.findOne innerQuery, innerOptions
+    if otherUser?
+      for program in otherUser.profile.hot_programs
+        if program.title of currentProgramsMap
+          self.recommendations[program.title] += relation.weight * program.counter
+
+  recommendation = null
+  recommendationStrength = 0
+  recommendationUnknown = null
+  recommendationUnknownStrength = 0
+  for title, strength of self.recommendations
+    if strength > recommendationStrength
+      recommendationStrength = strength
+      recommendation = title
+    if strength > recommendationUnknownStrength
+      if not (title of hot_programs)
+        recommendationUnknownStrength = strength
+        recommendationUnknown = title
+  result =
+    recommendation: recommendation
+    unknownRecommendation: recommendationUnknown
+  return result
+
 
 
 # The following function is completely untested as of yet
@@ -13,7 +74,7 @@ getRecommendations = (userId) ->
     limit: 100
   recommendations = {}
   count = 0
-  Relations.find(query, options).forEach (relation) ->
+  Relations.find(query, options).map (relation) ->
     otherUserId = if relation.user_ids[0] is userId then relation.user_ids[1] else relation.user_ids[0]
     otherUser = Meteor.users.findOne otherUserId
     if otherUser.profile.watching
@@ -38,7 +99,7 @@ getRecommendations = (userId) ->
     _id: $ne: userId
   options =
     limit = 100
-  Meteor.users.find(_id: $ne: userId).forEach (otherUser) ->
+  Meteor.users.find(_id: $ne: userId).map (otherUser) ->
     console.log "  checking", otherUser._id
     if not Relations.findOne(user_ids: $all: [otherUser._id, userId])?
       strength = calculateWeight user, otherUser
@@ -68,18 +129,10 @@ getRecommendations = (userId) ->
 
 @walk = (userId) ->
   user = Meteor.users.findOne userId
-  return if not user?
-  return if not user.profile?
-  return if not user.profile.hot_programs?
-  query =
-    user_ids: userId
-  options =
-    sort:
-      weight: -1
-    limit: 100
+  return if not user?.profile.hot_programs?
   counter = 0
   # update current Relations
-  Relations.find(query, options).forEach (relation) ->
+  findUserRelations(userId).map (relation) ->
     otherUserId = if relation.user_ids[0] is userId then relation.user_ids[1] else relation.user_ids[0]
     otherUser = Meteor.users.findOne otherUserId
     strength = calculateWeight user, otherUser
@@ -87,7 +140,7 @@ getRecommendations = (userId) ->
       upsertRelation userId, otherUserId, strength
 
   # walk current Relations to nodes that are currently unconnected to userId
-  Relations.find(query, options).forEach (relation) ->
+  findUserRelations(userId).map (relation) ->
     otherUserId = if relation.user_ids[0] is userId then relation.user_ids[1] else relation.user_ids[0]
     console.log "  walking node with userId: ", otherUserId
     innerQuery =
@@ -101,7 +154,7 @@ getRecommendations = (userId) ->
         weight: -1
       limit: 10
 
-    Relations.find(innerQuery, innerOptions).forEach (secondRelation) ->
+    Relations.find(innerQuery, innerOptions).map (secondRelation) ->
       thirdUserId = if secondRelation.user_ids[0] is otherUserId then secondRelation.user_ids[1] else secondRelation.user_ids[0]
       console.log "    visiting node with userId: ", thirdUserId
       thirdUser = Meteor.users.findOne thirdUserId

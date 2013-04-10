@@ -62,6 +62,7 @@ xmltv_file = StringIO.StringIO(xmltv_str)
 
 if args.clean:
     print("deleting database entries ... ", end="")
+    sys.stdout.flush()
     db.channels.remove()
     db.programs.remove()
     print("done")
@@ -107,3 +108,6 @@ for program in xmltv.read_programmes(xmltv_file):
         db.programs.update({"_id": program["_id"]}, {"$addToSet": {"channel_ids": program["channel"]}})
         
 print("done")
+
+if __name__ == "__main__":
+    pass

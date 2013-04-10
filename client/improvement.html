@@ -3,7 +3,7 @@
     <p id="feedback_question">
       Interessiert Dich:
       <h3>{{title}} ({{channel_names channel_ids}})</h3>
-      <h4>{{subtitle}}</h3>
+      {{#if subtitle}}<h4>{{subtitle}}</h3>{{/if}}
     </p>
     
     <div class="feedback_button" data-value="yes" data-program_title="{{title}}">

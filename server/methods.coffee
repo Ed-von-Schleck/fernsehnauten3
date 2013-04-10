@@ -29,3 +29,6 @@ Meteor.methods
     if logSize is (logSize | 0) # 0, 1, 2, 4, 8, ... 2^n
       console.log "triggered walk for", @userId
       walk @userId
+
+  getRecommendations: ->
+    return getRecByFriendHistory @userId

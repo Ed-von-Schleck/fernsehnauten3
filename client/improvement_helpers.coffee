@@ -14,5 +14,4 @@ Template.improvement.helpers
         name: 1
     channels =  Channels.find query, options
     names = _.pluck channels.fetch(), "name"
-    console.log names.join ", "
     return names.join ", "
