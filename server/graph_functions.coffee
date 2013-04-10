@@ -10,15 +10,17 @@ getRecommendations = (userId) ->
   Relations.find(query, options).forEach (relation) ->
     otherUserId = if relation.user_ids[0] is userId then relation.user_ids[1] else relation.user_ids[0]
     otherUser = Meteor.users.findOne otherUserId
-    if otherUser.watching
+    if otherUser.profile.watching
       ++count
-      if otherUser.watching in recommendations
-        recommendations[otherUser.watching] += 1
+      if otherUser.profile.watching in recommendations
+        recommendations[otherUser.profile.watching] += relation.weight
       else
-        recommendations[otherUser.watching] = 1
+        recommendations[otherUser.profile.watching] = relation.weight
   for program_id, strength of recommendations
     recommendations[program_id] = strength / count
-  return recommendations
+
+  sorted_recommendation_pairs = _.sortBy _.pairs(recommendations), (pair) -> pair[1]
+  return sorted_recommendation_pairs
 
 addRandomEdge = (userId) ->
   user = Meteor.users.findOne userId
