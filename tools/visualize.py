@@ -68,9 +68,11 @@ def main():
     graph = make_graph()
     server = BaseHTTPServer.HTTPServer(('localhost', 8080), Handler)
     try:
-          server.serve_forever()
+        print "serving from localhost:8080 ..."
+        server.serve_forever()
     except KeyboardInterrupt:
         pass
+    print "shutting down"
     server.server_close()
 
 if __name__ == "__main__":
