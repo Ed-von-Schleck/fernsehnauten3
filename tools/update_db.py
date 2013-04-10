@@ -55,7 +55,7 @@ else:
 xmltv_file = StringIO.StringIO()
 print("downloading data ... ", end="")
 sys.stdout.flush()
-xmltv_command = ["tv_grab_eu_egon"]
+xmltv_command = ["tools/tv_grab_eu_egon"]
 xmltv_str = subprocess.check_output(xmltv_command)
 print("done")
 xmltv_file = StringIO.StringIO(xmltv_str)
