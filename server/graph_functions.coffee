@@ -1,3 +1,9 @@
+getRecByFriendHistory = (userId) ->
+  undefined
+
+
+# The following function is completely untested as of yet
+###
 getRecommendations = (userId) ->
   query =
     user_ids: userId
@@ -21,8 +27,9 @@ getRecommendations = (userId) ->
 
   sorted_recommendation_pairs = _.sortBy _.pairs(recommendations), (pair) -> pair[1]
   return sorted_recommendation_pairs
+###
 
-addRandomEdge = (userId) ->
+@addRandomEdge = (userId) ->
   user = Meteor.users.findOne userId
   return if not user?
   return if not user.profile?
@@ -38,7 +45,7 @@ addRandomEdge = (userId) ->
       if strength?
         upsertRelation userId, otherUser._id, strength
 
-upsertRelation = (userId, otherUserId, strength) ->
+@upsertRelation = (userId, otherUserId, strength) ->
     existingRelation = Relations.findOne
       user_ids:
         $all: [userId, otherUserId]
@@ -59,7 +66,7 @@ upsertRelation = (userId, otherUserId, strength) ->
         Relations.remove _id: existingRelation._id
 
 
-walk = (userId) ->
+@walk = (userId) ->
   user = Meteor.users.findOne userId
   return if not user?
   return if not user.profile?

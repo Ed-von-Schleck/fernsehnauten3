@@ -6,5 +6,13 @@ Template.improvement.helpers
       unknown_program = UnknownPrograms.findOne random: $lt: rand
     return unknown_program
 
-  channel_name: (id) ->
-    return Channels.findOne(id)?["display-name"][0][0]
+  channel_names: (channel_ids) ->
+    query =
+      _id: $in: channel_ids
+    options =
+      fields:
+        name: 1
+    channels =  Channels.find query, options
+    names = _.pluck channels.fetch(), "name"
+    console.log names.join ", "
+    return names.join ", "

@@ -3,7 +3,7 @@ Meteor.startup ->
     query = {}
     options =
       fields:
-        "display-name": 1
+        "name": 1
         "logo": 1
     return Channels.find query, options
 
@@ -14,8 +14,8 @@ Meteor.startup ->
     options =
       fields:
         title: 1
-        channel: 1
-        "sub-title": 1
+        channel_ids: 1
+        subtitle: 1
         start: 1
         stop: 1
     return Programs.find query, options
@@ -36,18 +36,18 @@ Meteor.startup ->
         else
           known_program_titles = []
         query =
-          "title.0.0": $nin: known_program_titles
+          title: $nin: known_program_titles
         options =
           fields:
             title: 1
-            "sub-title": 1
-            channel: 1
+            subtitle: 1
+            channel_ids: 1
           limit: 100
         unknown_programs = Programs.find query, options
         unknown_programs.forEach (program) ->
           program.random = Math.random()
           self.added "unknown_programs", program._id, program
-          self.old_unknown_programs[program._id] = program.title[0][0]
+          self.old_unknown_programs[program._id] = program.title
 
         self.old_known_program_titles = known_program_titles
         
@@ -59,7 +59,7 @@ Meteor.startup ->
         diff = _.difference known_program_titles, self.old_known_program_titles
         if diff.length isnt 0
           query =
-            "title.0.0": $in: diff
+            title: $in: diff
           options =
             fields: _id: 1
           #Programs.find(query, options).forEach (program) ->

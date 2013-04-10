@@ -3,7 +3,6 @@ Template.improvement.events
     $target = $(event.currentTarget)
     switch $target.attr "data-value"
       when "yes"
-        #console.log $target.attr "data-program_title"
         Meteor.call "like", $target.attr "data-program_title"
         Session.set "random", Math.random()
       when "no"
